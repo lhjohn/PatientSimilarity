@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """Manifold learning of non-linear data relationships
-This file contains functions manifold learn the non-linear relationships in
-the covariate data.
+This file contains functions to manifold learn the non-linear relationships in
+patient data.
 
 Licensed to the Apache Software Foundation (ASF) under one or more
 contributor license agreements. See the NOTICE file distributed with this
@@ -37,6 +37,7 @@ import pandas as pd
 from sklearn.manifold import Isomap
 from sklearn.manifold import LocallyLinearEmbedding
 from sklearn.manifold import TSNE
+from sklearn.manifold import MDS
 
 # --------------------------------------------------------------------------- #
 #                  OWN IMPORTS                                                #
@@ -75,6 +76,8 @@ def fit_manifold(pc, outcome, technique="isomap", dim=2):
         df = __manifold_tsne(pc, outcome, dim=2, n_iterations=4000)
     elif technique == "lle":
         df = __manifold_lle(pc, outcome, dim)
+    elif technique == "mds":
+        df = __manifold_mds(pc, outcome, dim)
 
     df = pd.concat([df, outcome], axis=1)
     return df
@@ -83,13 +86,13 @@ def fit_manifold(pc, outcome, technique="isomap", dim=2):
 # --------------------------------------------------------------------------- #
 #                  LOCAL FUNCTIONS                                            #
 # --------------------------------------------------------------------------- #
-def __manifold_isomap(pc, outcome, dim=2):
+def __manifold_isomap(pc, outcome, dim=3):
     """Fit Isomap.
     :return: DataFrame of covariates"""
     isomap = Isomap(n_components=dim, n_jobs=-1)
     iso_out = isomap.fit_transform(pc)
 
-    df_iso_out = pd.DataFrame(iso_out, columns=["D1", "D2"])
+    df_iso_out = pd.DataFrame(iso_out, columns=["D1", "D2", "D3"])
     return df_iso_out
 
 
@@ -107,11 +110,21 @@ def __manifold_lle(pc, outcome, dim=2):
 def __manifold_tsne(pc, outcome, dim=2, n_iterations=4000):
     """Fit t-distributed Stochastic Neighbor Embedding.
     :return: DataFrame of covariates"""
-    lle = TSNE(n_components=dim, verbose=2, n_iter=n_iterations)
-    lle_out = lle.fit_transform(pc)
+    tsne = TSNE(n_components=dim, verbose=2, n_iter=n_iterations)
+    tsne_out = tsne.fit_transform(pc)
 
-    df_lle_out = pd.DataFrame(lle_out, columns=["D1", "D2"])
-    return df_lle_out
+    df_tsne_out = pd.DataFrame(tsne_out, columns=["D1", "D2"])
+    return df_tsne_out
+
+
+def __manifold_mds(pc, outcome, dim=3):
+    """Fit Multidimensional Scaling.
+        :return: DataFrame of covariates"""
+    mds = MDS(n_components=dim, n_jobs=-1, verbose=2)
+    mds_out = mds.fit_transform(pc)
+
+    df_mds = pd.DataFrame(mds_out, columns=["D1", "D2", "D3"])
+    return df_mds
 
 # --------------------------------------------------------------------------- #
 #                  END OF FILE                                                #

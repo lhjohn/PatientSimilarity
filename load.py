@@ -64,13 +64,13 @@ __status__ = 'Development'
 # --------------------------------------------------------------------------- #
 #                  EXPORTED FUNCTIONS                                         #
 # --------------------------------------------------------------------------- #
-def load_covariates(filename, redundancy=True):
+def load_covariates(filename, remove_redundancy=True):
     """Load covariate data file.
     :return: DataFrame of covariates"""
     df = pd.read_csv(filename)
     df = df.pivot(index='rowId', columns='covariateId',
                   values='covariateValue')
-    if redundancy:
+    if remove_redundancy:
         threshold = df.shape[0] * 0.001
         df.dropna(thresh=threshold, axis=1, inplace=True)
 

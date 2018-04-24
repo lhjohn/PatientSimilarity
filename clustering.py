@@ -88,7 +88,9 @@ def __cluster_kmeans(manifold_df, n_clusters):
     kmeans = KMeans(n_clusters=n_clusters, random_state=0)
     kmeans_out = kmeans.fit_predict(manifold_df.loc[:, ["D1", "D2"]])
 
-    kmeans_out = pd.concat([manifold_df, pd.DataFrame(kmeans_out, columns=["Cluster"], dtype="category")], axis=1)
+    kmeans_out = pd.concat([manifold_df,
+                            pd.DataFrame(kmeans_out, columns=["Cluster"],
+                                         dtype="category")], axis=1)
     return kmeans_out
 
 
@@ -96,9 +98,14 @@ def __cluster_agglomerative(manifold_df, n_clusters):
     """Fit Agglomerative.
     :return: DataFrame of covariates"""
     agglomerative = AgglomerativeClustering(n_clusters=n_clusters)
-    agglomerative_out = agglomerative.fit_predict(manifold_df.loc[:, ["D1", "D2"]])
+    agglomerative_out = agglomerative.fit_predict(
+        manifold_df.loc[:, ["D1", "D2"]])
 
-    agglomerative_out = pd.concat([manifold_df, pd.DataFrame(agglomerative_out, columns=["Cluster"], dtype="category")],
+    agglomerative_out = pd.concat([manifold_df,
+                                   pd.DataFrame(
+                                       agglomerative_out,
+                                       columns=["Cluster"],
+                                       dtype="category")],
                                   axis=1)
     return agglomerative_out
 

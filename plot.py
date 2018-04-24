@@ -68,19 +68,34 @@ __status__ = 'Development'
 # --------------------------------------------------------------------------- #
 #                  EXPORTED FUNCTIONS                                         #
 # --------------------------------------------------------------------------- #
-def plot_sparsity(sparse):
+def plot_sparsity(sparse, patient_subset=None, paper=False):
     non_zero_count = sparse.count_nonzero()
     dense = sparse.toarray()
     n_cov = dense.shape[1]
     n_pat = dense.shape[0]
 
     sparsity = non_zero_count/(n_cov*n_pat)*100
-    plt.imshow(sparse.toarray()[0:n_cov, 0:n_cov], cmap="Greys",
+
+    if patient_subset is not None:
+        subset = patient_subset
+    else:
+        subset = n_cov
+
+    plt.imshow(sparse.toarray()[0:subset, 0:n_cov], cmap="Greys",
                interpolation="nearest")
-    plt.xlabel("Covariates")
-    plt.ylabel("Patient subset")
-    plt.suptitle("Sparsity")
+
+    if not paper:
+        plt.suptitle("Sparsity")
+        plt.xlabel("Covariates")
+        plt.ylabel("Patient subset")
+    else:
+        plt.tick_params(axis='both', which='major', labelsize=22)
+        plt.tick_params(axis='both', which='minor', labelsize=22)
+        plt.xlabel("Covariates", fontsize=22)
+        plt.ylabel("Patient subset", fontsize=22)
+
     plt.title("Non-zero percentage: {:5.3}%".format(sparsity))
+
     plt.show()
 
 
