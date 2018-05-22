@@ -74,7 +74,7 @@ def decompose_svd(sparse, n_pc=0):
     if n_pc == 0:
         n_pc = sparse.toarray().shape[1] - 1
 
-    svd = TruncatedSVD(n_components=n_pc)
+    svd = TruncatedSVD(n_components=n_pc, )
     svd.fit(sparse)
     pc = svd.transform(sparse)
     return pc

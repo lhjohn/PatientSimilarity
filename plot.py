@@ -37,7 +37,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import scipy as sp
 import numpy as np
-from ggplot import *
+# from ggplot import *
 
 # --------------------------------------------------------------------------- #
 #                  OWN IMPORTS                                                #
@@ -94,7 +94,7 @@ def plot_sparsity(sparse, patient_subset=None, paper=False):
         plt.xlabel("Covariates", fontsize=22)
         plt.ylabel("Patient subset", fontsize=22)
 
-    plt.title("Non-zero percentage: {:5.3}%".format(sparsity))
+    # plt.title("Non-zero percentage: {:5.3}%".format(sparsity))
 
     plt.show()
 
@@ -107,23 +107,23 @@ def plot_svd_redundancy(svd):
     plt.suptitle("Singular-Value Decomposition")
     print(plt.show())
 
-
-def plot_manifold(df):
-    a_plot = ggplot(aes(x="D1", y="D2", color="outcome"), data=df) +\
-        geom_point(alpha=0.9, size=5) + \
-        scale_color_manual(values=["orange", "purple"]) +\
-        labs(title='Manifold') +\
-        theme_bw()
-    print(a_plot)
-
-
-def plot_cluster(df):
-    a_plot = ggplot(aes(x="D1", y="D2", color="Cluster"), data=df) +\
-        geom_point(alpha=0.9, size=5) + \
-        scale_color_brewer(type="qual", palette="Set1") +\
-        labs(title='Cluster') +\
-        theme_bw()
-    print(a_plot)
+#
+# def plot_manifold(df):
+#     a_plot = ggplot(aes(x="D1", y="D2", color="outcome"), data=df) +\
+#         geom_point(alpha=0.9, size=5) + \
+#         scale_color_manual(values=["orange", "purple"]) +\
+#         labs(title='Manifold') +\
+#         theme_bw()
+#     print(a_plot)
+#
+#
+# def plot_cluster(df):
+#     a_plot = ggplot(aes(x="D1", y="D2", color="Cluster"), data=df) +\
+#         geom_point(alpha=0.9, size=5) + \
+#         scale_color_brewer(type="qual", palette="Set1") +\
+#         labs(title='Cluster') +\
+#         theme_bw()
+#     print(a_plot)
 # --------------------------------------------------------------------------- #
 #                  LOCAL FUNCTIONS                                            #
 # --------------------------------------------------------------------------- #

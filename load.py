@@ -35,7 +35,7 @@ under the License."""
 # --------------------------------------------------------------------------- #
 import pandas as pd
 from scipy import sparse as sp
-
+import numpy as np
 # --------------------------------------------------------------------------- #
 #                  OWN IMPORTS                                                #
 # --------------------------------------------------------------------------- #
@@ -64,19 +64,11 @@ __status__ = 'Development'
 # --------------------------------------------------------------------------- #
 #                  EXPORTED FUNCTIONS                                         #
 # --------------------------------------------------------------------------- #
-def load_covariates(filename, remove_redundancy=True):
+def load_covariates(filename):
     """Load covariate data file.
     :return: DataFrame of covariates"""
-    df = pd.read_csv(filename)
-    df = df.pivot(index='rowId', columns='covariateId',
-                  values='covariateValue')
-    if remove_redundancy:
-        threshold = df.shape[0] * 0.001
-        df.dropna(thresh=threshold, axis=1, inplace=True)
-
-    df.fillna(0, inplace=True)
-    sparse = sp.csr_matrix(df.values)
-
+    covariates = pd.read_csv(filename, dtype={"rowId": int, "covariateId": int, "covariateValue": int})
+    sparse = sp.coo_matrix((covariates.iloc[:, 2].values, (covariates.iloc[:, 0].values, covariates.iloc[:, 1].values)))
     return sparse
 
 
@@ -84,7 +76,7 @@ def load_outcome(filename):
     """Load outcome data file.
     :return: DataFrame of outcomes"""
     df = pd.read_csv(filename)
-    df = df.astype(bool)
+    df = df['outcomeCount'].astype(bool)
     return df
 
 
